@@ -1,22 +1,25 @@
-/* Author: Jessie Wright
- * 
- * Purpose: For preparing data from the MSLR LeToR data set for our teams specific needs (pairwise LeToR)
- * Data here: http://research.microsoft.com/en-us/projects/mslr/download.aspx
- * - Converts from given format to csv (including qid)
- * - Samples csv (with qid) so that for each query there are a max of n documents at each relevance rating
- * - Converts csv file (with qid) to pairwise difference file (csv no qid)
- * --------------------------------
- * Designed to be used as a [clumsy] command line tool.  Some invalid inputs will cause a crash.  Run with no options to see
- * usage information.
- * --------------------------------
- * If you want to use the final pairwise output as an .arff the header should be:
- * @attribute label {0,1,2,3,4}
- * @attribute attrN numeric  // for n 0 - 94
- * ...
- * @attribute attrN {-1,0,1} // for n 95-99
- * ...
- * @attribute attrN numeric // for n 100-135    
- * 
- * Create the header in mydata.arff then cat <thisprogramoutputfile> >> mydata.arff
- * then you should be able to use this format with weka etc
- */
+ Author: Jessie Wright
+ 
+ Purpose: For preparing data from the MSLR LeToR data set for our teams specific needs (pairwise LeToR)
+ 
+ Data here: http://research.microsoft.com/en-us/projects/mslr/download.aspx
+  - Converts from given format to csv (including qid)
+  - Samples csv (with qid) so that for each query there are a max of n documents at each relevance rating
+  - Converts csv file (with qid) to pairwise difference file (csv no qid)
+  --------------------------------
+ 
+  Designed to be used as a [clumsy] command line tool.  Some invalid inputs will cause a crash.  Run with no options to see
+  usage information.
+ 
+  --------------------------------
+  If you want to use the final pairwise output as an .arff the header should be:
+  @attribute label {0,1,2,3,4}
+  @attribute attrN numeric  // for n 0 - 94
+  ...
+  @attribute attrN {-1,0,1} // for n 95-99
+  ...
+  @attribute attrN numeric // for n 100-135    
+  
+  Create the header in mydata.arff then cat <thisprogramoutputfile> >> mydata.arff
+  then you should be able to use this format with weka etc
+ 
