@@ -5,15 +5,7 @@ public class Record{
 		private String csvInput;
 		private double[] features;
 		
-		public Record(){
-			features = new double[136];
-		}
 		
-		public Record(int relevance, int queryId){
-			this.relevance = relevance;
-			this.queryId = queryId;
-			features = new double[136];
-		}
 		
 		public Record(String csvInputLine){
 			String[] fields = csvInputLine.split(",");
@@ -62,8 +54,11 @@ public class Record{
 			String toReturn = "";
 			toReturn += this.relevance - b.GetRelevance() > 0 ? 1 : -1;
 			for(int i = 0; i < features.length; i++){
+				
 				toReturn += ",";
-				toReturn += this.features[i] - b.GetFeatureVal(i);
+				//boolean values 95-99 produce categorical {-1, 0 , 1}  cast to int so they are enum for H20
+				if(i > 94 && i < 100) toReturn += (int) this.features[i] - b.GetFeatureVal(i);
+				else toReturn += this.features[i] - b.GetFeatureVal(i);
 			}
 			
 			return toReturn;
