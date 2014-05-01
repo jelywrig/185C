@@ -1,9 +1,28 @@
+import java.util.Comparator;
+
+/**
+ * For Learning to Rank Machine Learning Project, SJSU 185C/267
+ * 
+ * Record represents features of document with respect to query
+ * Relevant for MSLR (Microsoft Learning to Rank) dataset
+ * 
+ * Records are comparable by their rankScore
+ * 
+ * 
+ *
+ * @author Jessie Wright
+ *
+ */
+
+
+
 public class Record{
 		
-		private int relevance;
+		private int relevance;  //objective score from file
 		private int queryId;
-		private String csvInput;
+		private String csvInput; 
 		private double[] features;
+		private int rankScore; // rank assigned by Query performRanking
 		
 		
 		
@@ -16,6 +35,15 @@ public class Record{
 			for(int i = 0; i < 136; i++){
 				features[i] = Double.parseDouble(fields[i+2]);
 			}
+			rankScore = -99999999;
+		}
+		
+		public void SetRankScore(int rankScore){
+			this.rankScore = rankScore;
+		}
+		
+		public int GetRankScore(){
+			return this.rankScore;
 		}
 		
 		public void SetRelevance(int newRelevance){
@@ -67,6 +95,25 @@ public class Record{
 		public String toString(){
 			return csvInput;
 		}
+
+		
+		Comparator<Record> getRankScoreComparator(){
+			return new Comparator<Record>(){
+				public int compare(Record r1, Record r2){
+					return r2.GetRankScore() - r1.GetRankScore();
+				}
+			};
+		}
+		
+		Comparator<Record> getRelevanceComparator(){
+			return new Comparator<Record>(){
+				public int compare(Record r1, Record r2){
+					return r2.GetRelevance() - r1.GetRelevance();
+				}
+			};
+		}
+
+		
 		
 	
 	}
