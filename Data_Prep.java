@@ -46,13 +46,7 @@ public class Data_Prep {
 	
 	
 	public static void main(String[] args) {
-		
-		System.out.println(args.length);
-		for(String s: args){
-			System.out.println(s);
-		}
-		
-		
+				
 		if(args.length < 2 || args.length > 4){
 			System.out.print(USAGE);
 			return;
@@ -155,11 +149,11 @@ public class Data_Prep {
 			while(line != null){
 				prevQID = currQID;
 				currRecord = new Record(line);
-				currQID = currRecord.GetQueryId();
+				currQID = currRecord.getQueryId();
 				if (currQID != prevQID) {
 					int[] scoreCount = {0,0,0,0,0};
 					for(Record r: records){
-						scoreCount[r.GetRelevance()]++;
+						scoreCount[r.getRelevance()]++;
 					}
 					ratingCount[numQueries] = scoreCount;
 					records.clear();
@@ -214,14 +208,14 @@ public class Data_Prep {
 			while(line != null){
 				prevQID = currQID;
 				currRecord = new Record(line);
-				currQID = currRecord.GetQueryId();
+				currQID = currRecord.getQueryId();
 				if (currQID != prevQID) {
 					if(queryNum % 500 == 0) System.out.println("sampling query count " + queryNum); 
 					int[] rateCount = {0,0,0,0,0};
 					for(Record r: records){
-						if(rateCount[r.GetRelevance()] < n){
+						if(rateCount[r.getRelevance()] < n){
 							out.println(r.toString());
-							rateCount[r.GetRelevance()]++;
+							rateCount[r.getRelevance()]++;
 						}
 					}
 					records.clear();
@@ -269,7 +263,7 @@ public class Data_Prep {
 			while (line != null) {
 				prevQID = currQID;
 				currRecord = new Record(line);
-				currQID = currRecord.GetQueryId();
+				currQID = currRecord.getQueryId();
 				if (currQID != prevQID) {
 					numQueries++;
 					if (numQueries % 100 == 0)
@@ -281,12 +275,12 @@ public class Data_Prep {
 						for (int j = i + 1; j < numRecords; j++) {
 							b = records.get(j);
 							// skip records with same relevance rating
-							if (a.GetRelevance() != b.GetRelevance()) {
+							if (a.getRelevance() != b.getRelevance()) {
 								// divide up between +1/-1 relevance rankings
 								if (j % 2 == 0)
-									out.println(a.Difference(b));
+									out.println(a.difference(b));
 								else
-									out.println(b.Difference(a));
+									out.println(b.difference(a));
 							}
 						}
 	
