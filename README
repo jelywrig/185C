@@ -1,18 +1,24 @@
  Author: Jessie Wright
  
- Purpose: For preparing data from the MSLR LeToR data set for our teams specific needs (pairwise LeToR)
+ Purpose: For preparing data from the MSLR LeToR data set for our teams specific needs (pairwise LeToR), generating ranking of documents for queries, and evaluating ranking.
  
  Data here: http://research.microsoft.com/en-us/projects/mslr/download.aspx
+  --------------------------------
+  Driver Classes:
+  
+==========================
+Data_Prep
+===========================
+  Designed to be used as a [clumsy] command line tool.  Some invalid inputs will cause a crash.  Run with no options to see usage information.
+ 
+ 
   - Converts from given format to csv (including qid)
   - Samples csv (with qid) so that for each query there are a max of n documents at each relevance rating
   - Converts csv file (with qid) to pairwise difference file (csv no qid)
-  --------------------------------
- 
-  Designed to be used as a [clumsy] command line tool.  Some invalid inputs will cause a crash.  Run with no options to see
-  usage information.
- 
-  --------------------------------
-  If you want to use the final pairwise output as an .arff the header should be:
+  
+
+
+If you want to use the final pairwise output as an .arff the header should be:
   @attribute label {0,1,2,3,4}
   @attribute attrN numeric  // for n 0 - 94
   ...
@@ -20,6 +26,26 @@
   ...
   @attribute attrN numeric // for n 100-135    
   
-  Create the header in mydata.arff then cat <thisprogramoutputfile> >> mydata.arff
-  then you should be able to use this format with weka etc
- 
+  Create the header in mydata.arff then cat <thisprogramoutputfile> >> mydata.arff then you should be able to use this format with weka etc
+
+=================================
+TestRanking
+================================
+Reads through file of documents (MSLR.csv format, output of option 1 or 3 of Data_Prep) and, using supplied MSLRbinaryModel,
+performs pairwise ranking and outputs:
+-Ideal DCG  - if no records were out of order   4,3,3,2,1
+-Actual DCG
+- NDCG = ActualDCG/IdealDCG
+
+Current implmentation requires you to edit source to change model being used(one line change MSLRdummyModel model = ... to YourMSLRModel model = ...).  Currently using a MSLRdummyModel which makes random pairwise decisions. MSLRbinaryModel Interface requires implemenation of predict() method which takes a csv record (of vector difference between record a and b) and returns 1 if a is better -1 if a is worse.
+
+
+
+
+
+
+
+
+
+
+
