@@ -202,6 +202,28 @@ public class Query {
 		
 	}
 	
+	/* 
+	 * error measure discussed with dr. tran
+	 *  total error = 0
+	 *  for(i ; i < numRecords ; i++) 
+	 *  	error += |idealorder.get(i) - actual.get(i).getRelevance()|
+	 *  
+	 *  normalized = error/numRecords 
+	 */
+	
+	
+	double getNormalizedError(){
+		double error = 0;
+		int numRecords = documents.size();
+		for(int i = 0; i < numRecords; i++){
+			error += Math.abs(relevanceList.get(i) - documents.get(i).getRelevance());
+		}
+		return error/numRecords;
+	}
+	
+	
+	
+	
 	/**
 	 *  outputs ordered list of documents in query (Relevance, RankScore)
 	 */
@@ -213,6 +235,7 @@ public class Query {
 			System.out.print("(" + r.getRelevance() + "," + r.getRankScore() + "),");
 			if(count % 10 == 0) System.out.println();
 		}	
+		if(count % 10 != 0) System.out.println();
 	}
 	
 	/**

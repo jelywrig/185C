@@ -156,7 +156,8 @@ public class Record{
 		Comparator<Record> getRankScoreComparator(){
 			return new Comparator<Record>(){
 				public int compare(Record r1, Record r2){
-					return (int)Math.ceil(r2.getRankScore() - r1.getRankScore());
+					//to avoid ties for fractional differences (to take advantage of enhanced ordering)
+					return (int) (1000.0*(r2.getRankScore() - r1.getRankScore()));
 				}
 			};
 		}
@@ -167,7 +168,7 @@ public class Record{
 		Comparator<Record> getRelevanceComparator(){
 			return new Comparator<Record>(){
 				public int compare(Record r1, Record r2){
-					return (int) Math.ceil(r2.getRelevance() - r1.getRelevance());
+					return  r2.getRelevance() - r1.getRelevance();
 				}
 			};
 		}

@@ -25,8 +25,13 @@ public class TestRanking {
 			
 			String line = in.readLine();
 			int currQID, prevQID;
+			
+//instantiate model here   change performRanking call below to performContinuousRanking
+// to match type of model (binary or continuous)
+			
 			//MSLRmahoutRF bb = new MahoutRF(args[1], args[2]);
-			MSLRdummyModel model = new MSLRdummyModel();
+			//MSLRdummyModel model = new MSLRdummyModel();
+			MSLRdummyContinuous model = new MSLRdummyContinuous();
 			Record currRecord = new Record(line);
 			currQID = currRecord.getQueryId();
 			Query currQuery = new Query(currQID);
@@ -39,13 +44,17 @@ public class TestRanking {
 				currQID = currRecord.getQueryId();
 				if(currQID == prevQID) currQuery.addRecord(currRecord);
 				else{
-					currQuery.peformRanking(model);
+					//if using binary model
+					//currQuery.peformRanking(model);
+					//if using continuous model
+					currQuery.performRankingContinuous(model);
 					System.out.println(currQuery + ":");
-					//currQuery.displayQueryDocumentRanking();
+					currQuery.displayQueryDocumentRanking();
 					double idealDCG = currQuery.getIdealDCG();
 					double actualDCG = currQuery.getResultDCG();
 					double nDCG = actualDCG/idealDCG;
-					System.out.println("Ideal DCG: " + idealDCG + " Actual DCG: " + actualDCG + " " + "NDCG: " + nDCG);
+					double nError = currQuery.getNormalizedError();
+					System.out.println("NDCG: " + nDCG + " Normalized Error: " + nError);
 					System.out.println("\n");
 					currQuery = new Query(currQID);
 					currQuery.addRecord(currRecord);
