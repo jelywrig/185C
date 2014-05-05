@@ -77,7 +77,7 @@ public class Query {
 		
 		int[][] pairwiseRel = new int[this.documents.size()][this.documents.size()];
 		
-				
+		//generate pairwise decisions (row doc - col doc)		
 		for(int i = 0; i < this.documents.size(); i++){
 			
 			for(int j = i + 1; j < this.documents.size(); j++){
@@ -85,6 +85,7 @@ public class Query {
 				int result = model.predict(documents.get(i).difference(documents.get(j)));
 				
 				pairwiseRel[i][j] = result;
+				//fill in symmetric entry
 				pairwiseRel[j][i] = -result;
 			}	
 		}
@@ -103,6 +104,40 @@ public class Query {
 		// sort by rank score
 		Collections.sort(documents, documents.get(0).getRankScoreComparator()) ;
 		ranked = true;
+		
+	}
+	
+	void performRankingContinuous(MSLRcontinuousModel model){
+		double[][] pairwiseRel = new double[this.documents.size()][this.documents.size()];
+		
+		//generate pairwise decisions (row doc - col doc)		
+		for(int i = 0; i < this.documents.size(); i++){
+			
+			for(int j = i + 1; j < this.documents.size(); j++){
+				
+				double result = model.predict(documents.get(i).difference(documents.get(j)));
+				
+				pairwiseRel[i][j] = result;
+				//fill in symmetric entry
+				pairwiseRel[j][i] = 1 - result;
+			}	
+		}
+		//score each doc
+		for(int i = 0; i < this.documents.size(); i++){
+			double score = 0;
+			for(int j = 0; j < this.documents.size(); j++){
+				score += pairwiseRel[i][j];
+			}
+			documents.get(i).setRankScore(score);
+		}
+		
+		//shuffle to do away with bias of original document order
+		Collections.shuffle(documents);
+
+		// sort by rank score
+		Collections.sort(documents, documents.get(0).getRankScoreComparator()) ;
+		ranked = true;
+		
 		
 	}
 	
@@ -174,6 +209,7 @@ public class Query {
 		int count = 0;
 		System.out.println("(Relevance, RankScore)");
 		for(Record r : documents){
+			count++;
 			System.out.print("(" + r.getRelevance() + "," + r.getRankScore() + "),");
 			if(count % 10 == 0) System.out.println();
 		}	

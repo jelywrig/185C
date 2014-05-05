@@ -22,7 +22,7 @@ public class Record{
 		private int queryId;
 		private String csvInput; 
 		private double[] features;
-		private int rankScore; // rank assigned by Query performRanking
+		private double rankScore; // rank assigned by Query performRanking
 		
 		
 		/**
@@ -47,7 +47,7 @@ public class Record{
 		 *  within a Query by performRanking()
 		 * @param rankScore
 		 */
-		public void setRankScore(int rankScore){
+		public void setRankScore(double rankScore){
 			this.rankScore = rankScore;
 		}
 		
@@ -55,7 +55,7 @@ public class Record{
 		 * 
 		 * @return generated rankScore, -999999 if not ranked
 		 */
-		public int getRankScore(){
+		public double getRankScore(){
 			return this.rankScore;
 		}
 		/**
@@ -156,7 +156,7 @@ public class Record{
 		Comparator<Record> getRankScoreComparator(){
 			return new Comparator<Record>(){
 				public int compare(Record r1, Record r2){
-					return r2.getRankScore() - r1.getRankScore();
+					return (int)Math.ceil(r2.getRankScore() - r1.getRankScore());
 				}
 			};
 		}
@@ -167,7 +167,7 @@ public class Record{
 		Comparator<Record> getRelevanceComparator(){
 			return new Comparator<Record>(){
 				public int compare(Record r1, Record r2){
-					return r2.getRelevance() - r1.getRelevance();
+					return (int) Math.ceil(r2.getRelevance() - r1.getRelevance());
 				}
 			};
 		}
